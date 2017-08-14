@@ -21,6 +21,11 @@ class Body implements \JsonSerializable
      */
     public function __construct($bodyData = [])
     {
+        if (!is_array($bodyData))
+        {
+            $this->data = $bodyData;
+            return;
+        }
         foreach ($bodyData as $key => $value) {
             $this->setSingleData($key, $value);
         }
