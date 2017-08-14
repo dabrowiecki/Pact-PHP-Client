@@ -135,10 +135,6 @@ final class ConsumerPactBuilder
      */
     public function interactionFromBuild()
     {
-        if (!isset($this->providerState)) {
-            throw new PactException("Before setting up, you need to set provider state");
-        }
-
         if (!isset($this->requestInformation)) {
             throw new PactException("Before setting up, you need to set request information");
         }
