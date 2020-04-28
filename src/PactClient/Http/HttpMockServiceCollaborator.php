@@ -60,7 +60,7 @@ class HttpMockServiceCollaborator
         $this->host = $host;
         $this->consumerName = $consumerName;
         $this->providerName = $providerName;
-        $this->contractDir = $contractDir;
+        $this->contractDir = getcwd() . '/' . $contractDir;
 
         $this->requestBuilder = new RequestBuilder($this->host);
     }
@@ -91,15 +91,46 @@ class HttpMockServiceCollaborator
         $this->validateResponse($response);
     }
 
+    public function healthCheck()
+    {
+        $response = $this->client->sendRequest($this->requestBuilder->buildHealthCheckRequest());
+
+        if ($response->getStatusCode() !== 200
+            || $response->getBody()->getContents() !== "Mock service running\n") {
+            throw new ConnectionException('Failed to receive a successful response from the Mock Server.');
+        }
+
+        return true;
+    }
+
+    protected function savePact($response)
+    {
+        $status = file_put_contents(
+            "{$this->contractDir}/{$this->consumerName}-{$this->providerName}.json",
+            $response->getBody()->getContents()
+        );
+
+        if ($status === false) {
+            throw new PactException("Unable to save pact to {$this->contractDir}/{$this->consumerName}-{$this->providerName}.json");
+        }
+    }
+
     /**
      * It ends provider verification process
      *
      */
     public function finishProviderVerificationProcess()
     {
-        $response = $this->client->sendRequest($this->requestBuilder->buildEndProviderTestRequest($this->consumerName, $this->providerName, $this->contractDir));
+        $response = $this->client->sendRequest(
+            $this->requestBuilder->buildEndProviderTestRequest(
+                $this->consumerName,
+                $this->providerName,
+                $this->contractDir
+            )
+        );
 
         $this->validateResponse($response);
+        $this->savePact($response);
     }
 
     /**

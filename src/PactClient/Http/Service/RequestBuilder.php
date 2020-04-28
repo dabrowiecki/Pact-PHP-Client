@@ -82,6 +82,18 @@ class RequestBuilder
         );
     }
 
+    public function buildHealthCheckRequest()
+    {
+        return new Request(
+            "GET",
+            $this->host . "/",
+            [
+                'Content-Type'        => 'application/json',
+                'X-Pact-Mock-Service' => true,
+            ]
+        );
+    }
+
     /**
      * Builds request for ending testing process for specific provider
      *
