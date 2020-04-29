@@ -123,17 +123,17 @@ $this->testSuiteNames = [$suite->getName()];
         try {
             $pact = $this->getPact();
             $pact->verify();
+
+            if ($this->failed === true) {
+                print 'A unit test has failed. Skipping PACT file generation.';
+            } else {
+                $pact->finishProviderVerificationProcess();
+            }
         } finally {
             if ($this->startMock)
             {
                 $this->server->stop();
             }
-        }
-
-        if ($this->failed === true) {
-            print 'A unit test has failed. Skipping PACT file generation.';
-        } else {
-            $pact->finishProviderVerificationProcess();
         }
     }
 }

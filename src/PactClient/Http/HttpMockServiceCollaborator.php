@@ -60,7 +60,7 @@ class HttpMockServiceCollaborator
         $this->host = $host;
         $this->consumerName = $consumerName;
         $this->providerName = $providerName;
-        $this->contractDir = getcwd() . '/' . $contractDir;
+        $this->contractDir = $contractDir;
 
         $this->requestBuilder = new RequestBuilder($this->host);
     }
@@ -103,18 +103,6 @@ class HttpMockServiceCollaborator
         return true;
     }
 
-    protected function savePact($response)
-    {
-        $status = file_put_contents(
-            "{$this->contractDir}/{$this->consumerName}-{$this->providerName}.json",
-            $response->getBody()->getContents()
-        );
-
-        if ($status === false) {
-            throw new PactException("Unable to save pact to {$this->contractDir}/{$this->consumerName}-{$this->providerName}.json");
-        }
-    }
-
     /**
      * It ends provider verification process
      *
@@ -130,7 +118,6 @@ class HttpMockServiceCollaborator
         );
 
         $this->validateResponse($response);
-        $this->savePact($response);
     }
 
     /**
