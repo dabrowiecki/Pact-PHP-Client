@@ -1,9 +1,5 @@
 # Pact-PHP-Client
-![PHP 7.0](https://img.shields.io/badge/PHP-7.0-8C9CB6.svg?style=flat)
-[![Build Status](https://travis-ci.org/madkom/Pact-PHP-Client.svg?branch=master)](https://travis-ci.org/madkom/Pact-PHP-Client)
-[![Coverage Status](https://coveralls.io/repos/github/madkom/Pact-PHP-Client/badge.svg?branch=master)](https://coveralls.io/github/madkom/Pact-PHP-Client?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/madkom/pact-php-client/v/stable)](https://packagist.org/packages/madkom/pact-php-client)
-[![Total Downloads](https://poser.pugx.org/madkom/pact-php-client/downloads)](https://packagist.org/packages/madkom/pact-php-client)
+![PHP 5.6](https://img.shields.io/badge/PHP-5.6-8C9CB6.svg?style=flat)
 [![License](https://poser.pugx.org/madkom/pact-php-client/license)](https://packagist.org/packages/madkom/pact-php-client)
 
 ### What is Pact
