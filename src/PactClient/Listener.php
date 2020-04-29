@@ -36,6 +36,8 @@ class Listener implements TestListener
     /** @var bool */
     private $failed = false;
 
+    private $startMock = false;
+
     /**
      * PactTestListener constructor.
      *
@@ -43,10 +45,11 @@ class Listener implements TestListener
      *
      * @throws MissingEnvVariableException
      */
-    public function __construct(array $testSuiteNames)
+    public function __construct(array $testSuiteNames, $startMock = false)
     {
         $this->testSuiteNames   = $testSuiteNames;
         $this->mockServerConfig = new Config();
+        $this->startMock = $startMock;
     }
 
     /**
@@ -121,7 +124,10 @@ $this->testSuiteNames = [$suite->getName()];
             $pact = $this->getPact();
             $pact->verify();
         } finally {
-            $this->server->stop();
+            if ($this->startMock)
+            {
+                $this->server->stop();
+            }
         }
 
         if ($this->failed === true) {
