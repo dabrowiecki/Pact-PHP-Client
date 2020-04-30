@@ -97,7 +97,7 @@ class HttpMockServiceCollaborator
 
         if ($response->getStatusCode() !== 200
             || $response->getBody()->getContents() !== "Mock service running\n") {
-            throw new ConnectionException('Failed to receive a successful response from the Mock Server.');
+            throw new PactException('Failed to receive a successful response from the Mock Server.');
         }
 
         return true;
