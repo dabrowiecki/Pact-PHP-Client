@@ -26,6 +26,8 @@ class MockService {
      */
     protected $pact;
 
+    protected $output = '';
+
     public function __construct(Config $config, HttpMockServiceCollaborator $pact)
     {
         $this->config = $config;
@@ -40,11 +42,21 @@ class MockService {
 
         $this->process = new Process($command . ' ' . \implode(' ', $arguments));
 
-        $processId =  $this->process->start();
+        $processId =  $this->process->start(array($this, 'output'));
 
         $this->verifyHealthCheck();
 
         return $processId;
+    }
+
+    public function output($type, $data)
+    {
+        if ($type == Process::OUT)
+        {
+            $this->output .= "\n\e[34m$data\e[39m";
+        } else {
+            $this->output .= "\n\e[31m$data\e[39m";
+        }
     }
 
     public function stop()
@@ -69,7 +81,7 @@ class MockService {
             }
         } while ($tries <= $maxTries);
 
-        throw new PactException("Failed to make connection to Mock Server in {$maxTries} attempts.");
+        throw new PactException("Failed to make connection to Mock Server in {$maxTries} attempts.{$this->output}");
     }
 
     /**
