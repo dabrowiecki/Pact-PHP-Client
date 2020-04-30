@@ -5,6 +5,7 @@ namespace Madkom\PactClient;
 use Madkom\PactClient\Http\HttpMockServiceCollaborator;
 use Madkom\PactClient\MockService\Config;
 use Symfony\Component\Process\Process;
+use Http\Client\Exception\NetworkException;
 
 class MockService {
     /** @var int command exit code */
@@ -25,7 +26,7 @@ class MockService {
      */
     protected $pact;
 
-    public function __construct(Config $config, HttpMockServiceCollaborator $pact = null)
+    public function __construct(Config $config, HttpMockServiceCollaborator $pact)
     {
         $this->config = $config;
         $this->pact = $pact;
@@ -63,12 +64,12 @@ class MockService {
 
             try {
                 return $this->pact->healthCheck();
-            } catch (ConnectException $e) {
+            } catch (NetworkException $e) {
                 \sleep(1);
             }
         } while ($tries <= $maxTries);
 
-        throw new HealthCheckFailedException("Failed to make connection to Mock Server in {$maxTries} attempts.");
+        throw new PactException("Failed to make connection to Mock Server in {$maxTries} attempts.");
     }
 
     /**

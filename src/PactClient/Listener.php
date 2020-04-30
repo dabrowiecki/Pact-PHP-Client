@@ -60,7 +60,7 @@ class Listener implements TestListener
     public function startTestSuite(TestSuite $suite)
     {
         if (\in_array($suite->getName(), $this->testSuiteNames) && $this->startMock) {
-            $this->server = new MockService($this->mockServerConfig);
+            $this->server = new MockService($this->mockServerConfig, $this->getPact());
             $this->server->start();
         }
 }
