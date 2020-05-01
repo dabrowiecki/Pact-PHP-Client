@@ -74,11 +74,37 @@ class HttpMockServiceCollaborator
      */
     public function setupInteraction(Interaction $interaction)
     {
+        $this->clearInteractions();
+
+        $this->addInteraction($interaction);
+    }
+
+    private function clearInteractions()
+    {
         $response = $this->client->sendRequest($this->requestBuilder->buildRemoveExpectationsRequest());
         $this->validateResponse($response);
+    }
 
+    /**
+     * @param Interaction $interaction
+     */
+    private function addInteraction(Interaction $interaction)
+    {
         $response = $this->client->sendRequest($this->requestBuilder->buildCreateInteractionRequest($interaction));
         $this->validateResponse($response);
+    }
+
+    /**
+     * @param Interaction[] $interactions
+     */
+    public function setupInteractions(array $interactions)
+    {
+        $this->clearInteractions();
+
+        foreach($interactions as $interaction)
+        {
+            $this->addInteraction($interaction);
+        }
     }
 
     /**

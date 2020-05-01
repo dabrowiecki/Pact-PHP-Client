@@ -20,7 +20,7 @@ use Exception;
  */
 class Listener implements TestListener
 {
-    /** @var MockServer */
+    /** @var MockService */
     private $server;
 
     /**
