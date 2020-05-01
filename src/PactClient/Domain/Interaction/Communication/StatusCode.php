@@ -26,6 +26,7 @@ class StatusCode implements \JsonSerializable
     const FORBIDDEN_CODE = 403;
     const NOT_FOUND_CODE = 404;
     const CONFLICT_CODE = 409;
+    const PRECONDITION_FAILED_CODE = 412;
     const INTERNAL_SERVER_ERROR_CODE = 500;
     const BAD_GATEWAY_CODE = 502;
     const SERVICE_UNAVAILABLE_CODE = 503;
